@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/templates/modelo.xhtml">
+        <ui:define name="title">
+            PDV FiliaL - Cadastro Caixas e Logs
+        </ui:define>
+
+        <f:metadata>
+            <f:viewAction action="#{computerBean.carregar()}"/>
+        </f:metadata>
+
+        <ui:define name="content">
+            <p:importEnum type="br.pdv.model.enums.TipoLog" var="TipoLog" allSuffix="EnumValores"/>
+
+            <h:form id="formulario">
+                <p:messages id="mensagem" />
+                <p:fieldset class="fields" legend="FiLiaL - Cadastro/Update">
+                    <h:panelGrid columns="3">
+                        <p:outputLabel value="Caixa: " for="nome" />
+                        <p:inputText id="nome" value="#{computerBean.computer.nome}" size="10"
+                                     required="true"
+                                     requiredMessage="Informe o nome do caixa! Ex.: caixa02"
+                                     validatorMessage="Nome tem que ser igual 7 caracteres">
+                            <f:validateLength minimum="7" maximum="7" />
+                            <f:ajax event="blur" render="mensagem" />
+                        </p:inputText>
+                        <p:message for="nome"/>
+
+                        <p:outputLabel value="Id/Tag: " for="tag"/>
+                        <p:inputText id="tag" value="#{computerBean.computer.tag}" size="10" required="true"
+                                     requiredMessage="Informe identificação (JPpc) ou Tag (se pc for DeLL)"
+                                     validatorMessage="Máximo de 10 caracteres!">
+                            <f:validateLength maximum="10"/>
+                            <f:ajax event="blur" render="mensagem"/>
+                        </p:inputText>
+                        <p:message for="tag"/>
+
+                        <p:outputLabel value="Processador: " for="processador" />
+                        <p:inputText id="processador"
+                                     value="#{computerBean.computer.processador}" size="47"
+                                     validatorMessage="Máximo de 45 caracteres!">
+                            <f:validateLength maximum="45" />
+                            <f:ajax event="blur" render="mensagem" />
+                        </p:inputText>
+                        <p:message for="processador"/>
+
+                        <p:outputLabel value="Memóra: " for="memoria" />
+                        <p:inputText id="memoria" value="#{computerBean.computer.memoria}"
+                                     size="47" validatorMessage="Máximo de 45 caracteres!">
+                            <f:validateLength maximum="45" />
+                            <f:ajax event="blur" render="mensagem" />
+                        </p:inputText>
+                        <p:message for="memoria"/>
+
+                        <p:outputLabel value="HD/SSD: " for="hd" />
+                        <p:inputText id="hd" value="#{computerBean.computer.hd}" size="47"
+                                     validatorMessage="Máximo de 45 caracteres!">
+                            <f:validateLength maximum="45" />
+                            <f:ajax event="blur" render="mensagem" />
+                        </p:inputText>
+                        <p:message for="hd"/>
+
+                        <p:outputLabel value="OffBoard: " for="placa" />
+                        <p:inputTextarea id="placa" value="#{computerBean.computer.offboard}" rows="2" cols="50"
+                                         validatorMessage="Máximo de 500 caracteres!">
+                            <f:validateLength maximum="500" />
+                            <f:ajax event="blur" render="mensagem" />
+                        </p:inputTextarea>
+                        <p:message for="placa"/>
+
+                        <p:outputLabel value="Windows: " for="so"/>
+                        <p:selectOneMenu id="so" value="#{computerBean.computer.so}" >
+                            <f:selectItems value="#{computerBean.SO}" var="so" itemLabel="#{so}" itemValue="#{so}" />                        
+                            <f:ajax event="blur" render="mensagem" />
+                        </p:selectOneMenu>
+                        <p:message for="so"/>
+
+                        <p:outputLabel value="Observação: " for="obs" />
+                        <p:inputTextarea id="obs" value="#{computerBean.computer.obs}" rows="2" cols="50"
+                                         validatorMessage="Máximo de 255 caracteres!">
+                            <f:validateLength maximum="255" />
+                            <f:ajax event="blur" render="mensagem" />
+                        </p:inputTextarea>
+                        <p:message for="obs"/>
+
+                        <p:outputLabel value="PDV: " for="pdv"/>
+                        <p:selectOneMenu id="pdv" value="#{computerBean.idPdv}">
+                            <f:selectItems value="#{computerBean.listarPdvsFilial}" var="pdv" itemValue="#{pdv.id}" itemLabel="#{pdv.nome}"/>  
+                            <p:ajax event="blur" listener="#{computerBean.atualizarPdv}"/>
+                        </p:selectOneMenu>
+                        <p:message for="pdv"/>
+
+                        <p:outputLabel value="Ativo" for="ativo"/>
+                        <p:selectOneRadio id="ativo" value="#{computerBean.computer.ativo}" unselectable="true">
+                            <f:selectItem itemLabel="Sim" itemValue="true"/>
+                            <f:selectItem itemLabel="Não" itemValue="false"/>
+                            <p:ajax update="ativo"/>
+                        </p:selectOneRadio>
+
+                    </h:panelGrid>
+
+                    <hr/>
+
+                    <h:panelGrid columns="3">
+                        <p:outputLabel for="tlog" value="Tipo Log: "/>
+                        <p:selectOneMenu id="tlog" value="#{computerBean.logItemTipo}">
+                            <f:selectItems value="#{computerBean.tiposLogs}" var="tlog"
+                                           itemValue="#{tlog}" itemLabel="#{tlog}"/>
+                        </p:selectOneMenu>
+                        <p:message for="tlog"/>
+
+                        <h:outputLabel value="Descreva Log:  " for="desc" />
+                        <p:inputTextarea id="desc" value="#{computerBean.logItem}" rows="3" cols="50" 
+                                         validatorMessage="Máximo de 500 caracteres!">
+                            <f:validateLength maximum="500" />
+                            <f:ajax event="blur" render="mensagem" />
+                        </p:inputTextarea>
+                        <p:message for="desc"/>
+
+                        <p:commandButton action="#{computerBean.adicionarLog()}" value="Inserir Log" immediate="true">
+                            <!--<f:ajax execute="@form" render="@form :formularioTabelaBairro:tabelaLog"/> -->
+                            <f:ajax execute="tlog desc" render="tabelaLog tlog desc"/>
+                        </p:commandButton>
+                    </h:panelGrid> 
+                </p:fieldset>
+                <br />
+                <fieldset class="fields">
+                    <legend>Logs</legend>
+
+                    <br />
+                    <h:dataTable id="tabelaLog" value="#{computerBean.logPC}"
+                                 var="logs" cellpadding="4" cellspacing="2">
+
+                        <h:column rendered="#{not computerBean.logEstaVazio}">
+                            <f:facet name="header">Data</f:facet>                            
+                            <h:outputText id="dataLogs" value="#{logs.data}"  >
+                                <f:convertDateTime for="dataLogs" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo" type="localDateTime" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column rendered="#{not computerBean.logEstaVazio}">
+                            <f:facet name="header">
+                                <h:commandLink actionListener="#{computerBean.ordenarLogs('az')}"
+                                               immediate="true">
+                                    <h:graphicImage library="img" name="up.png"/>
+                                </h:commandLink>
+                                <h:commandLink actionListener="#{computerBean.ordenarLogs('za')}" 
+                                               immediate="true">
+                                    <h:graphicImage library="img" name="down.png"/>
+                                </h:commandLink>
+                            </f:facet>
+                            <f:facet name="header"></f:facet>
+                            <h:outputText value="#{logs.tipoLog}" />
+                        </h:column>
+                        <h:column rendered="#{not computerBean.logEstaVazio}">
+                            <f:facet name="header">Descrição</f:facet>
+                            <h:outputText value="#{logs.descricao}" />
+                        </h:column>
+                        <h:column rendered="#{not computerBean.logEstaVazio}">
+                            <f:facet class="fields" name="header">Tools</f:facet>
+                            <center>
+                                <h:commandButton image="resources\img\delete.png"
+                                                 action="#{computerBean.apagarLos(logs)}"/>                                                
+                            </center>
+                        </h:column>
+                        <f:facet name="footer">
+                            <h:outputText class="label" value="Está vazio!"
+                                          rendered="#{computerBean.logEstaVazio}"/>
+                        </f:facet>
+                    </h:dataTable>
+                </fieldset>
+
+                &nbsp;<p:commandButton value="Gravar" action="#{computerBean.gravarPc()}" immediate="true"/>
+
+                <p:commandButton value="Cancelar" action="caixaFilial?faces-redirect=true"
+                                 immediate="true" />
+            </h:form>
+        </ui:define>
+
+
+        <ui:define name="footer" />
+    </ui:composition>
+</html>

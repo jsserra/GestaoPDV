@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="/templates/modelo.xhtml">
+        <ui:define name="title">
+            Celular - Create/Edite
+        </ui:define>
+        
+        <f:metadata>
+            <f:viewAction action="#{celularBean.carregar()}"/>
+        </f:metadata>
+
+        <ui:define name="content">
+            <p:importEnum type="br.pdv.model.enums.Marca" var="Marca" allSuffix="EnumValores" />            
+
+            <h:form id="formulario">
+                <p:messages id="mensagem"/>
+                <p:fieldset class="fields" legend="Celular - Create/Update">
+                    <h:panelGrid columns="3">
+                        <p:outputLabel value="Modelo" for="modelo"/>
+                        <p:inputText id="modelo" value="#{celularBean.celular.modelo}" size="35"
+                                     required="true" requiredMessage="Informe o Modelo!"
+                                     validatorMessage="Modelo, máximo de 35 caracteres">
+                            <f:validateLength minimum="5" maximum="35"/>
+                            <f:ajax event="blur" render="mensagem"/>
+                        </p:inputText>
+                        <p:message for="modelo"/>
+
+                        <p:outputLabel value="Código" for="codigo"/>
+                        <p:inputText id="codigo" value="#{celularBean.celular.cod}" size="35"
+                                     required="true" requiredMessage="Informe o Modelo"
+                                     validatorMessage="Tamanho máximo do código do modelo é de 35 caracteres">
+                            <f:validateLength maximum="35"/>
+                            <f:ajax event="blur" render="mensagem"/>
+                        </p:inputText>
+                        <p:message for="codigo"/>                                     
+
+                        <p:outputLabel value="Marca" for="marca"/>
+                        <p:selectOneMenu id="marca" value="#{celularBean.marca}" required="true" requiredMessage="Selecione uma Marca!" >
+                            <f:selectItems value="#{Marca.EnumValores}" var="item_Marca" itemValue="#{item_Marca}" itemLabel="#{item_Marca}" />
+                            <f:ajax event="blur"  render="mensagem" />
+                        </p:selectOneMenu>
+                        <p:message for="marca"/>
+
+                        <p:outputLabel value="IMEI 1" for="imei1"/>
+                        <p:inputText id="imei1" value="#{celularBean.celular.imei1}" size="20" 
+                                     required="true" requiredMessage="Informe o IMEI 1"
+                                     validatorMessage="IMEI são 15 caracteres">
+                            <f:validateLength minimum="12" maximum="15"/>
+                            <f:ajax event="blur" render="mensagem"/>
+                        </p:inputText>
+                        <p:message for="imei1"/>
+
+                        <p:outputLabel value="IMEI 2" for="imei2"/>
+                        <p:inputText id="imei2" value="#{celularBean.celular.imei2}" size="20" 
+                                     validatorMessage="IMEI são 15 caracteres">
+                            <f:validateLength minimum="12" maximum="15"/>
+                            <f:ajax event="blur" render="mensagem"/>
+                        </p:inputText>
+                        <p:message for="imei2"/>
+
+                        <p:outputLabel value="MAC" for="mac"/>
+                        <p:inputMask id="mac" value="#{celularBean.celular.mac}" mask="**:**:**:**:**:**" size="20"
+                                     validatorMessage="MAC são 17 caracteres!">
+                            <f:validateLength maximum="17"/>
+                            <f:ajax event="blur" render="mensagem"/>
+                        </p:inputMask>
+                        <p:message for="mac"/>
+                        
+                        <p:outputLabel value="Data" for="dataUsuario"/>
+                        <p:calendar id="dataUsuario" value="#{celularBean.celular.dataUsuario}" >
+                            <f:convertDateTime  for="dataUsuario" pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" type="localDate"/>
+                            <f:ajax event="blur" render="mensagem"/>
+                        </p:calendar>
+                        <p:message for="dataUsuario"/>
+
+                        <p:outputLabel value="Responsável" for="usuario"/>
+                        <p:selectOneMenu id="usuario" value="#{celularBean.usuarioId}">
+                            <f:selectItems value="#{celularBean.listaUsuarios}" var="usuario" 
+                                           itemValue="#{usuario.id}" itemLabel="#{usuario.nome}" />
+                            <f:ajax event="blur" render="mensagem" />
+                        </p:selectOneMenu>
+                        <p:message for="usuario"/>
+
+                        <p:outputLabel value="Filial: " for="filial"/>
+                        <p:selectOneRadio id="filial" value="#{celularBean.celular.filial}" unselectable="0">
+                            <f:selectItem itemLabel="Matriz" itemValue="0"/>
+                            <f:selectItem itemLabel="Filial" itemValue="1"/>                            
+                        </p:selectOneRadio>
+                        <p:message for="filial"/>
+
+                        <p:outputLabel value="Ativo" for="ativo"/>
+                        <p:selectOneRadio id="ativo" value="#{celularBean.celular.ativo}" unselectable="true">
+                            <f:selectItem itemLabel="Sim" itemValue="true"/>
+                            <f:selectItem itemLabel="Não" itemValue="false"/>
+                            <p:ajax update="ativo"/>
+                        </p:selectOneRadio>
+                        <p:message for="ativo"/>
+
+                        <p:outputLabel value="Observação: " for="obs" />
+                        <p:inputTextarea id="obs" value="#{celularBean.celular.obs}" rows="5" cols="45"
+                                         validatorMessage="Máximo de 500 caracteres!">
+                            <f:validateLength maximum="500" />
+                            <f:ajax event="blur" render="mensagem" />
+                        </p:inputTextarea>
+                        <p:message for="obs"/>                   
+
+                    </h:panelGrid>
+                    
+                    <p:commandButton action="#{celularBean.salvar}" value="Salvar" immediate="true"/>
+                        &nbsp;<p:commandButton value="Cancelar" action="listaCelular?faces-redirect=true" immediate="true"/>
+                    
+                </p:fieldset>
+            </h:form>
+        </ui:define>
+
+
+    </ui:composition>
+</html>
