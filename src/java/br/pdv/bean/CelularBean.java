@@ -12,6 +12,9 @@ import br.pdv.model.Usuario;
 import br.pdv.model.enums.Marca;
 import br.pdv.util.pdvException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.faces.context.FacesContext;
@@ -72,8 +75,7 @@ public class CelularBean implements Serializable {
 
     public void setUsuarioId(Integer usuarioId) {
         this.usuarioId = usuarioId;
-    }   
-    
+    }
 
     //ACTION LiSTAS
     public List<Celular> getListaCelular() throws pdvException {
@@ -85,11 +87,13 @@ public class CelularBean implements Serializable {
     }
 
     public List<Celular> getListaCelularFilial() throws pdvException {
-        return daoCelular.listar().stream().filter(x -> x.getFilial() == 1).collect(Collectors.toList());
+        return daoCelular.listar().stream().filter(x -> x.getFilial() == 1 && x.getAtivo() == true).collect(Collectors.toList());
     }
 
     public List<Usuario> getListaUsuarios() throws pdvException {
-        return daoUsuario.listar();
+        List<Usuario> usuarios = daoUsuario.listar();
+        Collections.sort(usuarios, Comparator.comparing(Usuario::getNome));
+        return usuarios;
     }
 
     public Integer getTotalCelularMatriz() throws pdvException {
@@ -149,14 +153,14 @@ public class CelularBean implements Serializable {
     }
 
     public String salvar() throws pdvException {
-        
-        if(usuarioId == null){
+
+        if (usuarioId == null) {
             this.usuario = daoUsuario.buscarId(1);
-        }else{
+        } else {
             this.usuario = daoUsuario.buscarId(usuarioId);
         }
-        
-        if(marca == null){
+
+        if (marca == null) {
             this.marca = Marca.Motorola;
         }
         celular.setUsuario(usuario);
@@ -177,7 +181,7 @@ public class CelularBean implements Serializable {
         daoCelular.desativar(celular);
         return "listaCelular?faces-redirect=true";
     }
-    
+
 
     /*Conversões e Mask
     public String format(String value) {

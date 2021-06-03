@@ -255,8 +255,8 @@ public class ComputerBean implements Serializable {
     }
 
     public List<String> getTiposLogs() {
-        return Arrays.asList("Banco", "caixa Incluir", "caixa Troca", "caixa Baixa", "Conexão", "Hardware",
-                "SASIII", "Rede", "Site Receita", "Stress", "Windows");
+        return Arrays.asList("Incluir", "Troca", "Desativar", "Envio Ajuda", "Envio Matriz",
+                "Conexão", "BD", "Hardware", "SASIII", "Rede", "Site Receita", "Stress", "Windows");
     }
 
     public List<String> getSO() {

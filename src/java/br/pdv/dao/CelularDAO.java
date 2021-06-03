@@ -43,6 +43,21 @@ public class CelularDAO implements Serializable {
     }
 
     public List<Celular> listar() throws pdvException {
+        List<Celular> lista = null;
+        try{
+            em.getTransaction().begin();
+            lista = em.createQuery("select c from Celular c order by c.modelo").getResultList();
+            em.getTransaction().commit();
+        }catch(HibernateException he){
+            if(em.isOpen() && em.getTransaction().isActive()){
+                em.getTransaction().rollback();
+            }
+            throw new pdvException("Falha ao listar celulares " + he.getMessage());
+        }
+        return lista;
+    }
+    
+    public List<Celular> listarTodos() throws pdvException{
         return dao.listar();
     }
 

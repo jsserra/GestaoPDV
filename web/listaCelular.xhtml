@@ -28,10 +28,8 @@
                         </p:column>
 
                         <p:column>
-                            <f:facet name="header">Modelo</f:facet>
-                            <center>
-                                <h:outputText value="#{cel.modelo}" style="font-weight: bold; font-size: 15px;"/>
-                            </center>
+                            <f:facet name="header">Modelo</f:facet>                            
+                            <h:outputText value="#{cel.modelo}" style="font-weight: bold; font-size: 15px;"/>                          
                         </p:column>
                         <p:column>
                             <f:facet name="header">IMEI</f:facet>
@@ -59,9 +57,12 @@
                         </p:column>
                         <p:column headerText="Tools">
                             <center>
-                                <p:commandButton action="#{celularBean.editar(cel)}" immediate="true" icon="fa fa-fw fa-edit"/>
-                                <p:commandButton action="#{celularBean.desativar(cel)}" immediate="true" icon="fa fa-fw fa-trash"/>
-                                <p:commandButton action="#{celularBean.excluir(cel)}" immediate="true" icon="fa fa-fw fa-remove"/>
+                                <p:commandButton id="bteditarcelm" action="#{celularBean.editar(cel)}" immediate="true" icon="fa fa-fw fa-edit"/>
+                                <p:tooltip for="bteditarcelm" value="Editar" position="top"/>
+                                <p:commandButton id="btdesativacelm" action="#{celularBean.desativar(cel)}" immediate="true" icon="fa fa-fw fa-trash"/>
+                                <p:tooltip for="btdesativacelm" value="Desativar" position="top"/>
+                                <p:commandButton id="btexcluircelm" action="#{celularBean.excluir(cel)}" immediate="true" icon="fa fa-fw fa-remove"/>
+                                <p:tooltip for="btexcluircelm" value="Excluir" position="top"/>
                             </center>
                         </p:column>
                     </p:dataTable>
@@ -80,10 +81,8 @@
                         </p:column>
 
                         <p:column>
-                            <f:facet name="header">Modelo</f:facet>
-                            <center>
-                                <h:outputText value="#{cel.modelo}" style="font-weight: bold; font-size: 15px;"/>
-                            </center>
+                            <f:facet name="header">Modelo</f:facet>                           
+                            <h:outputText value="#{cel.modelo}" style="font-weight: bold; font-size: 15px;"/>                           
                         </p:column>
                         <p:column>
                             <f:facet name="header">IMEI</f:facet>
@@ -111,9 +110,12 @@
                         </p:column>
                         <p:column headerText="Tools">
                             <center>
-                                <p:commandButton action="#{celularBean.editar(cel)}" immediate="true" icon="fa fa-fw fa-edit"/>
-                                <p:commandButton action="#{celularBean.desativar(cel)}" immediate="true" icon="fa fa-fw fa-trash"/>
-                                <p:commandButton action="#{celularBean.excluir(cel)}" immediate="true" icon="fa fa-fw fa-remove"/>
+                                <p:commandButton id="bteditarcel" action="#{celularBean.editar(cel)}" immediate="true" icon="fa fa-fw fa-edit"/>
+                                <p:tooltip for="bteditarcel" value="Editar" position="top"/>
+                                <p:commandButton id="btdesativacel" action="#{celularBean.desativar(cel)}" immediate="true" icon="fa fa-fw fa-trash"/>
+                                <p:tooltip for="btdesativacel" value="Desativar" position="top"/>
+                                <p:commandButton id="btexcluircel" action="#{celularBean.excluir(cel)}" immediate="true" icon="fa fa-fw fa-remove"/>
+                                <p:tooltip for="btexcluircel" value="Excluir" position="top"/>
                             </center>
                         </p:column>
                     </p:dataTable>
